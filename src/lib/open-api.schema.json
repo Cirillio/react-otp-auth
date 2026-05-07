@@ -1,0 +1,254 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "juniors bootcamp backend 🔥",
+    "description": "Апи для выполнения индивидуальных заданий",
+    "version": "1.0",
+    "contact": {}
+  },
+  "paths": {
+    "/api/auth/otp": {
+      "post": {
+        "operationId": "OtpsController_createOtp",
+        "summary": "Создание отп кода",
+        "tags": ["☄️ otps"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateOtpDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "create otp",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OtpResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/otps": {
+      "get": {
+        "operationId": "AppController_otps",
+        "summary": "страница с отп кодами",
+        "tags": ["pages"],
+        "responses": {
+          "200": {
+            "description": "Successful retrieval of OTPs",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users/signin": {
+      "post": {
+        "operationId": "UsersController_signin",
+        "summary": "Авторизация",
+        "tags": ["💂‍♂️ users"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SignInDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "signin",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SignInResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users/session": {
+      "get": {
+        "operationId": "UsersController_session",
+        "summary": "Получить сессию пользователя",
+        "tags": ["💂‍♂️ users"],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "session",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CreateOtpDto": {
+        "type": "object",
+        "properties": {
+          "phone": {
+            "type": "string",
+            "example": "89990009999"
+          }
+        },
+        "required": ["phone"]
+      },
+      "OtpResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "Статус запроса"
+          },
+          "reason": {
+            "type": "string",
+            "description": "Причина ошибки"
+          },
+          "retryDelay": {
+            "type": "number",
+            "example": 120000,
+            "description": "Время запроса повторного отп кода в мс"
+          }
+        },
+        "required": ["success", "retryDelay"]
+      },
+      "SignInDto": {
+        "type": "object",
+        "properties": {
+          "phone": {
+            "type": "string",
+            "example": "89990009999",
+            "description": "Номер телефона"
+          },
+          "code": {
+            "type": "number",
+            "example": 345231,
+            "description": "Отп код"
+          }
+        },
+        "required": ["phone", "code"]
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "ID пользователя"
+          },
+          "phone": {
+            "type": "string",
+            "example": "89990009999",
+            "description": "Номер телефона"
+          },
+          "firstname": {
+            "type": "string",
+            "example": "firstname",
+            "description": "Имя"
+          },
+          "middlename": {
+            "type": "string",
+            "example": "middlename",
+            "description": "Отчество"
+          },
+          "lastname": {
+            "type": "string",
+            "example": "lastname",
+            "description": "Фамилия"
+          },
+          "email": {
+            "type": "string",
+            "example": "email@gmail.com",
+            "description": "Почта"
+          },
+          "city": {
+            "type": "string",
+            "example": "city",
+            "description": "Город"
+          }
+        },
+        "required": ["_id", "phone"]
+      },
+      "SignInResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "Статус запроса"
+          },
+          "reason": {
+            "type": "string",
+            "description": "Причина ошибки"
+          },
+          "user": {
+            "description": "Пользователь",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/User"
+              }
+            ]
+          },
+          "token": {
+            "type": "string",
+            "description": "Пользовательский токен"
+          }
+        },
+        "required": ["success", "user", "token"]
+      },
+      "SessionResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "Статус запроса"
+          },
+          "reason": {
+            "type": "string",
+            "description": "Причина ошибки"
+          },
+          "user": {
+            "description": "Пользователь",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/User"
+              }
+            ]
+          }
+        },
+        "required": ["success", "user"]
+      }
+    }
+  }
+}

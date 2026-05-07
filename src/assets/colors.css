@@ -1,0 +1,29 @@
+/* Цвета из ui-кита */
+
+:root {
+  /* Background */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f3f4f6;
+  --bg-tertiary: #f9fafb;
+  --bg-disable: #f3f4f6;
+
+  /* Border */
+  --border-extra-light: #e3e5e5;
+  --border-light: #ced2da;
+  --border-medium: #97a1af;
+
+  /* Text */
+  --text-primary: #141c24;
+  --text-secondary: #344051;
+  --text-tertiary: #637083;
+  --text-quaternary: #97a1af;
+  --text-error: #f64c4c;
+
+  /* Brand */
+  --brand: #1975ff;
+  --brand-pressed: #1975ff;
+  --brand-hover: #0052cc;
+  --brand-extra-light: #cce0ff;
+  --brand-disabled: #cce0ff;
+  --indicator-focused: #4c94ff;
+}
