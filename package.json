@@ -8,7 +8,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "type-gen": "npx openapi-typescript src/lib/open-api.schema.json -o src/types/api.ts"
+    "type-gen": "npx openapi-typescript open-api.schema.json -o src/types/api.ts"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.100.9",
