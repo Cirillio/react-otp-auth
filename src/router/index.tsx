@@ -1,16 +1,26 @@
-import { createBrowserRouter } from 'react-router-dom'
+import { createBrowserRouter, Navigate } from 'react-router-dom'
 import { ErrorBoundary } from '../pages/boundary/error-boundary'
+import { RouterErrorPage } from '../pages/boundary/router-error-page'
 import MainPage from '../pages'
 import LoginPage from '../pages/auth/login'
 
 const router = createBrowserRouter([
   {
-    path: '/',
-    element: <ErrorBoundary><MainPage /></ErrorBoundary>,
-  },
-  {
-    path: '/auth/login',
-    element: <ErrorBoundary><LoginPage /></ErrorBoundary>,
+    errorElement: <RouterErrorPage />,
+    children: [
+      {
+        path: '/',
+        element: <ErrorBoundary><MainPage /></ErrorBoundary>,
+      },
+      {
+        path: '/auth/login',
+        element: <ErrorBoundary><LoginPage /></ErrorBoundary>,
+      },
+      {
+        path: '*',
+        element: <Navigate to="/auth/login" replace />,
+      },
+    ],
   },
 ])
 
