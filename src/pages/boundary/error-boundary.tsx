@@ -1,6 +1,6 @@
 import { Component, type ErrorInfo, type ReactNode } from 'react'
 import { Navigate } from 'react-router-dom'
-import { UnauthorizedError } from '../../lib/api'
+import { UnauthorizedError } from '../../lib/http'
 import ErrorWidget from '../../components/app/error-widget'
 
 interface Props {
