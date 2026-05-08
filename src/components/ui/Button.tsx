@@ -1,19 +1,35 @@
-import type { ButtonHTMLAttributes } from 'react'
+import type { ButtonHTMLAttributes, ReactNode } from 'react'
+import { Link } from 'react-router-dom'
 import { cn } from '../../lib/cn'
 
-interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant: 'contained' | 'text' | 'link' | 'outline'
-  color: 'primary' | 'secondary'
-  loading?: boolean
+type Variant = 'contained' | 'text' | 'link' | 'outline'
+type Color = 'primary' | 'secondary'
+
+interface CommonProps {
+  variant?: Variant
+  color?: Color
+  className?: string
+  children?: ReactNode
 }
+
+type AsButton = CommonProps &
+  Omit<ButtonHTMLAttributes<HTMLButtonElement>, keyof CommonProps> & {
+    to?: never
+    loading?: boolean
+  }
+
+type AsLink = CommonProps & {
+  to: string
+  loading?: never
+  disabled?: never
+}
+
+type ButtonProps = AsButton | AsLink
 
 const base =
   'inline-flex items-center justify-center gap-2 rounded-2xl py-4 px-8 text-base leading-6 font-semibold transition duration-150 ease-linear focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-line-light disabled:cursor-not-allowed cursor-pointer'
 
-const variants: Record<
-  ButtonProps['variant'],
-  Partial<Record<ButtonProps['color'], string>>
-> = {
+const variants: Record<Variant, Partial<Record<Color, string>>> = {
   contained: {
     primary:
       'bg-brand text-surface hover:bg-brand-hover disabled:bg-brand-light disabled:text-surface',
@@ -34,16 +50,21 @@ const variants: Record<
   },
 }
 
-export const Button = ({
-  variant,
-  color,
-  loading = false,
-  disabled,
-  className,
-  children,
-  ...attrs
-}: ButtonProps) => {
+// ! НАПИСАЛ НЕ ВСЕ СОЧЕТАНИЯ variant+color т.к. в UI-Ките их не было. Фантазировать и тратить время не стал.
+
+export const Button = (props: ButtonProps) => {
+  const { variant = 'contained', color = 'primary', className, children } = props
   const buttonStyles = cn(base, variants[variant][color], className)
+
+  if (props.to !== undefined) {
+    return (
+      <Link to={props.to} className={buttonStyles}>
+        {children}
+      </Link>
+    )
+  }
+
+  const { loading = false, disabled, ...attrs } = props as AsButton
 
   return (
     <button
@@ -51,8 +72,8 @@ export const Button = ({
       disabled={disabled || loading}
       aria-busy={loading}
       className={buttonStyles}
+      title={loading ? 'Загрузка...' : undefined}
     >
-      {loading ? <span className="animate-spin">⟳</span> : null}
       {children}
     </button>
   )

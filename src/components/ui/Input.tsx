@@ -16,7 +16,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     const hintId = `${id}-hint`
 
     const inputStyles = cn(
-      'w-full ring-line-light focus:ring-brand-focus text-ink-primary placeholder:text-ink-tertiary hover:ring-line-medium disabled:ring-line-light disabled:text-ink-tertiary disabled:bg-surface-disabled mt-1.5 mb-1 gap-2 rounded-lg py-3 pr-2 pl-3 text-base leading-6 font-normal ring transition duration-150 focus-within:outline-0 focus:ring-2',
+      'w-full bg-surface ring-line-light focus:ring-brand-focus text-ink-primary placeholder:text-ink-tertiary hover:ring-line-medium disabled:ring-line-light disabled:text-ink-tertiary disabled:bg-surface-disabled mt-1.5 mb-1 gap-2 rounded-lg py-3 pr-2 pl-3 text-base leading-6 font-normal ring transition duration-150 focus-within:outline-0 focus:ring-2',
       error && 'ring-ink-error ring-2',
       className,
     )
