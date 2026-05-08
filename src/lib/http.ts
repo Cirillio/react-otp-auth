@@ -1,4 +1,4 @@
-import { authToken } from './'
+import { authToken } from './token'
 
 // Кастомные ошибки от апи и авторизации
 export class ApiError extends Error {

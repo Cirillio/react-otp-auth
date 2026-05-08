@@ -31,7 +31,7 @@ body {
   }
 
   p {
-    @apply text-ink-primary font-normal;
+    @apply text-ink-primary leading-6 font-normal;
   }
 }
 
