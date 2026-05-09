@@ -1,5 +1,5 @@
 // Форматирование кода. Например для формы на шаге 2.
-// 79131234567 → +7 913 123 45 67
+// 79131234567 -> +7 913 123 45 67
 export const formatPhone = (phone: string): string => {
   const d = phone.replace(/\D/g, '')
   return (
@@ -16,6 +16,6 @@ export const formatPhone = (phone: string): string => {
   )
 }
 
-export const onOnlyDigitsInput = (event) => {
+export const onOnlyDigitsInput = (event: React.ChangeEvent<HTMLInputElement>) => {
   event.target.value = event.target.value.replace(/\D/g, '')
 }

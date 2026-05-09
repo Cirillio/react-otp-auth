@@ -61,7 +61,9 @@ export const useOtpAuth = () => {
     phoneForm,
     codeForm,
     onPhoneSubmit: (data: OtpPhoneType) => requestOtpMutation.mutate(data),
+    isPhonePending: requestOtpMutation.isPending,
     onCodeSubmit: (data: OtpCodeType) => signInMutation.mutate(data),
+    isCodePending: signInMutation.isPending,
     secondsLeft,
   }
 }

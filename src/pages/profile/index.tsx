@@ -6,6 +6,8 @@ export const ProfilePage = () => {
 
   const user = data?.user
 
+  if (!user) return null
+
   return (
     <div className="flex flex-col items-start gap-4">
       <h1 className="text-2xl font-bold">Профиль пользователя</h1>

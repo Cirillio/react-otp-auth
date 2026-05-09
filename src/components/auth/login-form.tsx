@@ -4,8 +4,16 @@ import { Button } from '../ui/Button'
 import { Input } from '../ui/Input'
 
 function LoginForm() {
-  const { step, phoneForm, codeForm, onPhoneSubmit, onCodeSubmit, secondsLeft } =
-    useOtpAuth()
+  const {
+    step,
+    phoneForm,
+    codeForm,
+    onPhoneSubmit,
+    onCodeSubmit,
+    secondsLeft,
+    isPhonePending,
+    isCodePending,
+  } = useOtpAuth()
 
   return (
     <div className="ring-line-light bg-surface flex w-full max-w-md flex-col items-start gap-6 rounded-lg px-6 py-8 ring">
@@ -27,7 +35,7 @@ function LoginForm() {
             error={phoneForm.formState.errors.phone?.message}
             placeholder="Телефон"
           />
-          <Button type="submit" className="w-full">
+          <Button disabled={isPhonePending} type="submit" className="w-full">
             Продолжить
           </Button>
         </form>
@@ -47,7 +55,7 @@ function LoginForm() {
             error={codeForm.formState.errors.otpCode?.message}
             placeholder="Проверочный код"
           />
-          <Button type="submit" className="w-full">
+          <Button disabled={isCodePending} type="submit" className="w-full">
             Войти
           </Button>
           <div className="flex flex-col gap-2">
@@ -61,6 +69,7 @@ function LoginForm() {
                 variant="text"
                 color="secondary"
                 className="w-full"
+                disabled={isPhonePending}
                 onClick={() => onPhoneSubmit({ phone: phoneForm.getValues('phone') })}
               >
                 Запросить код ещё раз

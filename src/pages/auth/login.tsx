@@ -5,13 +5,12 @@ import { useSession } from '../../hooks/useSession'
 
 function LoginPage() {
   const { data, isPending } = useSession()
+  if (isPending) {
+    return <span>Загрузка...</span>
+  }
 
   if (data?.user) {
     return <Navigate to="/" replace />
-  }
-
-  if (isPending) {
-    return <span>Загрузка...</span>
   }
 
   return (
