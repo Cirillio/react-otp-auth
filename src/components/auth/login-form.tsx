@@ -3,7 +3,12 @@ import { formatPhone, onOnlyDigitsInput } from '../../lib/formatters'
 import { Button } from '../ui/Button'
 import { Input } from '../ui/Input'
 
-function LoginForm() {
+interface LoginFormProps {
+  onSuccess?: () => void
+  onError?: (error: Error) => void
+}
+
+function LoginForm({ onSuccess, onError }: LoginFormProps) {
   const {
     step,
     phoneForm,
@@ -13,7 +18,7 @@ function LoginForm() {
     secondsLeft,
     isPhonePending,
     isCodePending,
-  } = useOtpAuth()
+  } = useOtpAuth({ onSuccess, onError })
 
   return (
     <div className="ring-line-light bg-surface flex w-full max-w-md flex-col items-start gap-6 rounded-lg px-6 py-8 ring">

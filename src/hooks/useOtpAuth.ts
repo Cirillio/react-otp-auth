@@ -2,7 +2,6 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { useNavigate } from 'react-router-dom'
 import { auth } from '../api/auth'
 import { authToken } from '../lib/token'
 import {
@@ -15,8 +14,12 @@ import { useOtpTimer } from './useOtpTimer'
 
 type OtpAuthStep = 'phone' | 'code'
 
-export const useOtpAuth = () => {
-  const navigate = useNavigate()
+interface UseOtpAuthOptions {
+  onSuccess?: () => void
+  onError?: (error: Error) => void
+}
+
+export const useOtpAuth = (options?: UseOtpAuthOptions) => {
   const [step, setStep] = useState<OtpAuthStep>('phone')
   const { secondsLeft, startTimer } = useOtpTimer()
 
@@ -49,10 +52,11 @@ export const useOtpAuth = () => {
       }),
     onSuccess: (response) => {
       authToken.set(response.token)
-      navigate('/profile')
+      options?.onSuccess?.()
     },
     onError: (error) => {
       codeForm.setError('otpCode', { message: error.message })
+      options?.onError?.(error)
     },
   })
 
