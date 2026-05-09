@@ -1,17 +1,17 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { useMutation } from '@tanstack/react-query'
-import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useMutation } from '@tanstack/react-query'
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
 import { auth } from '../api/auth'
 import { authToken } from '../lib/token'
-import { useOtpTimer } from './useOtpTimer'
 import {
   otpCodeSchema,
   otpPhoneSchema,
   type OtpCodeType,
   type OtpPhoneType,
 } from '../types/auth.schemas'
+import { useOtpTimer } from './useOtpTimer'
 
 type OtpAuthStep = 'phone' | 'code'
 
@@ -22,10 +22,12 @@ export const useOtpAuth = () => {
 
   const phoneForm = useForm<OtpPhoneType>({
     resolver: zodResolver(otpPhoneSchema),
+    mode: 'onBlur',
   })
 
   const codeForm = useForm<OtpCodeType>({
     resolver: zodResolver(otpCodeSchema),
+    mode: 'onBlur',
   })
 
   const requestOtpMutation = useMutation({
@@ -61,6 +63,5 @@ export const useOtpAuth = () => {
     onPhoneSubmit: (data: OtpPhoneType) => requestOtpMutation.mutate(data),
     onCodeSubmit: (data: OtpCodeType) => signInMutation.mutate(data),
     secondsLeft,
-    startTimer,
   }
 }

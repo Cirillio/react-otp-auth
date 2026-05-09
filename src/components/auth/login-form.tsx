@@ -1,22 +1,18 @@
 import { useOtpAuth } from '../../hooks/useOtpAuth'
+import { formatPhone, onOnlyDigitsInput } from '../../lib/formatters'
 import { Button } from '../ui/Button'
 import { Input } from '../ui/Input'
 
 function LoginForm() {
-  const {
-    step,
-    phoneForm,
-    codeForm,
-    onPhoneSubmit,
-    onCodeSubmit,
-    secondsLeft,
-    startTimer,
-  } = useOtpAuth()
+  const { step, phoneForm, codeForm, onPhoneSubmit, onCodeSubmit, secondsLeft } =
+    useOtpAuth()
 
   return (
     <div className="ring-line-light bg-surface flex w-full max-w-md flex-col items-start gap-6 rounded-lg px-6 py-8 ring">
       <h2>Вход</h2>
       <p className="text-base">Введите проверочный код для входа в личный кабинет</p>
+
+      {/*  Шаг 1: Ввод телефона и запрос кода */}
 
       {step === 'phone' ? (
         <form
@@ -24,7 +20,10 @@ function LoginForm() {
           onSubmit={phoneForm.handleSubmit(onPhoneSubmit)}
         >
           <Input
-            {...phoneForm.register('phone')}
+            {...phoneForm.register('phone', {
+              // Может ввести только цифры
+              onChange: onOnlyDigitsInput,
+            })}
             error={phoneForm.formState.errors.phone?.message}
             placeholder="Телефон"
           />
@@ -33,13 +32,18 @@ function LoginForm() {
           </Button>
         </form>
       ) : (
+        /* Шаг 2: Ввод OTP кода */
+
         <form
           className="flex w-full flex-col gap-4"
           onSubmit={codeForm.handleSubmit(onCodeSubmit)}
         >
-          <Input value={phoneForm.getValues('phone')} readOnly />
+          <Input value={formatPhone(phoneForm.getValues('phone'))} disabled />
           <Input
-            {...codeForm.register('otpCode')}
+            {...codeForm.register('otpCode', {
+              // Может ввести только цифры
+              onChange: onOnlyDigitsInput,
+            })}
             error={codeForm.formState.errors.otpCode?.message}
             placeholder="Проверочный код"
           />
@@ -57,7 +61,7 @@ function LoginForm() {
                 variant="text"
                 color="secondary"
                 className="w-full"
-                onClick={() => startTimer()}
+                onClick={() => onPhoneSubmit({ phone: phoneForm.getValues('phone') })}
               >
                 Запросить код ещё раз
               </Button>
