@@ -49,7 +49,7 @@ export const useOtpAuth = () => {
       }),
     onSuccess: (response) => {
       authToken.set(response.token)
-      navigate('/welcome')
+      navigate('/profile')
     },
     onError: (error) => {
       codeForm.setError('otpCode', { message: error.message })

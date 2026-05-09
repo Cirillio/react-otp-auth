@@ -1,7 +1,19 @@
+import { Navigate } from 'react-router-dom'
 import LoginForm from '../../components/auth/login-form'
 import { Button } from '../../components/ui/Button'
+import { useSession } from '../../hooks/useSession'
 
 function LoginPage() {
+  const { data, isPending } = useSession()
+
+  if (data?.user) {
+    return <Navigate to="/" replace />
+  }
+
+  if (isPending) {
+    return <span>Загрузка...</span>
+  }
+
   return (
     <div className="flex flex-col items-center gap-4">
       <LoginForm />

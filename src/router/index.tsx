@@ -1,8 +1,11 @@
 import { createBrowserRouter } from 'react-router-dom'
+import ProtectedRoute from '../components/auth/protected-route'
 import MainPage from '../pages'
 import LoginPage from '../pages/auth/login'
+import LogoutPage from '../pages/auth/logout'
+import { UnauthorizedPage } from '../pages/auth/unauthorized'
 import { RouterErrorPage } from '../pages/boundary/router-error-page'
-import { WelcomePage } from '../pages/welcome'
+import { ProfilePage } from '../pages/profile'
 
 const router = createBrowserRouter([
   {
@@ -14,12 +17,35 @@ const router = createBrowserRouter([
         element: <MainPage />,
       },
       {
-        path: 'auth/login',
-        element: <LoginPage />,
+        path: 'auth',
+        children: [
+          {
+            path: 'login',
+            element: <LoginPage />,
+          },
+          {
+            path: 'logout',
+            element: (
+              // на фоллбеке простой текст, в идеале скелетон докрутить
+              <ProtectedRoute fallback={<span>Загрузка...</span>}>
+                <LogoutPage />
+              </ProtectedRoute>
+            ),
+          },
+          {
+            path: 'unauthorized',
+            element: <UnauthorizedPage />,
+          },
+        ],
       },
       {
-        path: 'welcome',
-        element: <WelcomePage />,
+        path: 'profile',
+        element: (
+          // на фоллбеке простой текст, в идеале скелетон докрутить
+          <ProtectedRoute fallback={<span>Загрузка...</span>}>
+            <ProfilePage />
+          </ProtectedRoute>
+        ),
       },
     ],
   },

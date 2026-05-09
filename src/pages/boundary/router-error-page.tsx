@@ -22,7 +22,7 @@ export const RouterErrorPage = () => {
           'Что-то пошло не так'
         )}
       </p>
-      <Link to="/auth/login" className="text-brand text-sm underline">
+      <Link to="/" className="text-brand text-sm underline">
         На главную
       </Link>
     </div>
